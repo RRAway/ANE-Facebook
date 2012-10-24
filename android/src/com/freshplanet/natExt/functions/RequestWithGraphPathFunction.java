@@ -18,10 +18,14 @@
 
 package com.freshplanet.natExt.functions;
 
+import android.os.Bundle;
+import android.util.Log;
+
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBRequestThread;
+import com.freshplanet.natExt.AirFacebookActivity;
+import com.freshplanet.natExt.AirFacebookExtension;
 
 public class RequestWithGraphPathFunction implements FREFunction
 {
@@ -36,8 +40,7 @@ public class RequestWithGraphPathFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 		}
 		
 		// Retrieve graph path
@@ -48,28 +51,27 @@ public class RequestWithGraphPathFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
+			return null;
 		}
 		
 		// Retrieve parameters
-		String params = null;
+		Bundle params = null;
 		try
 		{
 			if (arg1.length > 2 && arg1[2] != null)
 			{
-				params = arg1[2].getAsString();
+				params = new Bundle();
+				params.putString("fields", arg1[2].getAsString());
 			}
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 		}
 		
-		// Create a new thread
-		FBRequestThread thread = new FBRequestThread(arg0, callbackName, graphPath, params);
-		thread.start();
+		// Run Facebook request
+		AirFacebookActivity.getInstance().request(graphPath, params, "GET", callbackName);
 		
 		return null;
 	}

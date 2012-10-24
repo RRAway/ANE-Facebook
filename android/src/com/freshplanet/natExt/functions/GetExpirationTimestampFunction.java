@@ -1,9 +1,12 @@
 package com.freshplanet.natExt.functions;
 
+import android.util.Log;
+
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBExtensionContext;
+import com.freshplanet.natExt.AirFacebookActivity;
+import com.freshplanet.natExt.AirFacebookExtension;
 
 public class GetExpirationTimestampFunction implements FREFunction
 {
@@ -12,12 +15,11 @@ public class GetExpirationTimestampFunction implements FREFunction
 	{
 		try
 		{
-			return FREObject.newObject(Math.round(FBExtensionContext.facebook.getAccessExpires()/1000));
+			return FREObject.newObject(Math.round(AirFacebookActivity.getInstance().expirationDate().getTime()/1000));
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 			return null;
 		}
 	}

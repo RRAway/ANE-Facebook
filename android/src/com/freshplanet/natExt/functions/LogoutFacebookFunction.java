@@ -18,62 +18,18 @@
 
 package com.freshplanet.natExt.functions;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.facebook.android.AsyncFacebookRunner;
-import com.facebook.android.AsyncFacebookRunner.RequestListener;
-import com.facebook.android.FacebookError;
-import com.facebook.android.SessionStore;
-import com.freshplanet.natExt.FBExtensionContext;
+import com.freshplanet.natExt.AirFacebookActivity;
 
-public class LogoutFacebookFunction implements FREFunction, RequestListener
-{
-	private FREContext freContext;
-	
+public class LogoutFacebookFunction implements FREFunction
+{	
 	@Override
 	public FREObject call(FREContext arg0, FREObject[] arg1)
 	{
-		freContext = arg0;
-		
-		SessionStore.clear(arg0.getActivity().getApplicationContext());
-		AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(FBExtensionContext.facebook);
-		mAsyncRunner.logout(freContext.getActivity(), this);
+		AirFacebookActivity.getInstance().logout();
 		
 		return null;
-	}
-	
-	@Override
-	public void onComplete(String response, Object state)
-	{
-		freContext.dispatchStatusEventAsync("USER_LOGGED_OUT", "Success");
-	}
-	
-	@Override
-	public void onIOException(IOException e, Object state)
-	{
-		freContext.dispatchStatusEventAsync("USER_LOGGED_OUT_ERROR", e.getMessage());
-	}
-
-	@Override
-	public void onFileNotFoundException(FileNotFoundException e, Object state)
-	{
-		freContext.dispatchStatusEventAsync("USER_LOGGED_OUT_ERROR", e.getMessage());
-	}
-  
-	@Override
-	public void onMalformedURLException(MalformedURLException e, Object state)
-	{
-		freContext.dispatchStatusEventAsync("USER_LOGGED_OUT_ERROR", e.getMessage());
-	}
-	
-	@Override
-	public void onFacebookError(FacebookError e, Object state)
-	{
-		freContext.dispatchStatusEventAsync("USER_LOGGED_OUT_ERROR", e.getMessage());
 	}
 }

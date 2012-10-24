@@ -21,8 +21,10 @@ package com.freshplanet.natExt;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREExtension;
 
-public class FBExtension implements FREExtension
+public class AirFacebookExtension implements FREExtension
 {
+	public static String TAG = "AirFacebook";
+	
 	public static FREContext context;
 
 	/**
@@ -30,7 +32,7 @@ public class FBExtension implements FREExtension
 	 */
 	public FREContext createContext(String extId)
 	{
-		return context = new FBExtensionContext();
+		return context = new AirFacebookExtensionContext();
 	}
 
 	/**

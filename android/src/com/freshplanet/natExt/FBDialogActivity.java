@@ -38,7 +38,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 		super.onCreate(savedInstanceState);
 		
 		// Get context
-		FREContext freContext = FBExtension.context;
+		FREContext freContext = AirFacebookExtension.context;
 		
 		// Setup views
 		requestWindowFeature(Window.FEATURE_LEFT_ICON);
@@ -90,7 +90,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 		}
 
 		// Create Facebook dialog
-		FBExtensionContext.facebook.dialog(this, method, parameters, this);
+		AirFacebookActivity.getInstance().facebook.dialog(this, method, parameters, this);
 	}
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -102,7 +102,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 	public void onComplete(Bundle values)
 	{
 		// Trigger callback if necessary
-		FREContext ctx = FBExtension.context;
+		FREContext ctx = AirFacebookExtension.context;
 		if (ctx != null && callbackName != null)
 		{
 			String postId = values.getString("post_id");
@@ -120,7 +120,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 	public void onFacebookError(FacebookError e)
 	{
 		// Trigger callback if necessary
-		FREContext ctx = FBExtension.context;
+		FREContext ctx = AirFacebookExtension.context;
 		if (ctx != null && callbackName != null)
 		{
 			ctx.dispatchStatusEventAsync(callbackName, "{ \"error\" : \""+e.getMessage()+"\" }");
@@ -132,7 +132,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 	public void onError(DialogError e)
 	{
 		// Trigger callback if necessary
-		FREContext ctx = FBExtension.context;
+		FREContext ctx = AirFacebookExtension.context;
 		if (ctx != null && callbackName != null)
 		{
 			ctx.dispatchStatusEventAsync(callbackName, "{ \"error\" : \""+e.getMessage()+"\" }");
@@ -144,7 +144,7 @@ public class FBDialogActivity extends Activity implements DialogListener
 	public void onCancel()
 	{
 		// Trigger callback if necessary
-		FREContext ctx = FBExtension.context;
+		FREContext ctx = AirFacebookExtension.context;
 		if (ctx != null && callbackName != null)
 		{
 			ctx.dispatchStatusEventAsync(callbackName, "{ \"cancel\" : true }");

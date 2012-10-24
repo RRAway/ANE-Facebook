@@ -18,12 +18,12 @@
 
 package com.freshplanet.natExt.functions;
 
+import android.content.Intent;
+
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.facebook.android.Facebook;
-import com.facebook.android.SessionStore;
-import com.freshplanet.natExt.FBExtensionContext;
+import com.freshplanet.natExt.AirFacebookActivity;
 
 public class InitFacebookFunction implements FREFunction
 {
@@ -42,11 +42,10 @@ public class InitFacebookFunction implements FREFunction
 			arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
 		}
 		
-		// Create Facebook object
-		FBExtensionContext.facebook = new Facebook(appID);
-		
-		// Restore previous token if possible
-		SessionStore.restore(FBExtensionContext.facebook, arg0.getActivity().getApplicationContext());
+		// Create Facebook activity
+		Intent i = new Intent(arg0.getActivity().getApplicationContext(), AirFacebookActivity.class);
+		i.putExtra("appID", appID);
+		arg0.getActivity().startActivity(i);
 		
 		return null;
 	}

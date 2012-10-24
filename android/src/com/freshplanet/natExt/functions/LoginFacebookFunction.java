@@ -18,19 +18,20 @@
 
 package com.freshplanet.natExt.functions;
 
-import android.content.Intent;
+import java.util.Arrays;
 
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBLoginActivity;
+import com.freshplanet.natExt.AirFacebookActivity;
 
 public class LoginFacebookFunction implements FREFunction
 {
 	@Override
 	public FREObject call(FREContext arg0, FREObject[] arg1)
 	{
+		// Get permissions
 		FREArray permissionsArray = (FREArray)arg1[0];
 		
 		long arrayLength = 0;
@@ -60,10 +61,8 @@ public class LoginFacebookFunction implements FREFunction
 			}
 		}
 		
-		
-		Intent i = new Intent(arg0.getActivity().getApplicationContext(), FBLoginActivity.class);
-		i.putExtra("permissions", permissions);
-		arg0.getActivity().startActivity(i);
+		// Start authentication flow
+		AirFacebookActivity.getInstance().login(Arrays.asList(permissions));
 		
 		return null;
 	}

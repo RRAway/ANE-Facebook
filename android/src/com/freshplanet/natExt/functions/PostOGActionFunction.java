@@ -1,12 +1,14 @@
 package com.freshplanet.natExt.functions;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBRequestThread;
+import com.freshplanet.natExt.AirFacebookActivity;
+import com.freshplanet.natExt.AirFacebookExtension;
 
 /** Post an OpenGraph action. */
 public class PostOGActionFunction implements FREFunction
@@ -22,8 +24,7 @@ public class PostOGActionFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 			return null;
 		}
 		
@@ -46,8 +47,7 @@ public class PostOGActionFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 		}
 		
 		// Retrieve the callback name
@@ -58,8 +58,7 @@ public class PostOGActionFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 			return null;
 		}
 		
@@ -71,14 +70,12 @@ public class PostOGActionFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 			return null;
 		}
 		
-		// Create a new thread
-		FBRequestThread thread = new FBRequestThread(arg0, callbackName, graphPath, params, httpMethod);
-		thread.start();
+		// Run Facebook request
+		AirFacebookActivity.getInstance().request(graphPath, params, httpMethod, callbackName);
 		
 		return null;
 	}

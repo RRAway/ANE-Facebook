@@ -1,21 +1,23 @@
 package com.freshplanet.natExt.functions;
 
-import android.content.Intent;
+import java.util.Arrays;
+
+import android.util.Log;
 
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBLoginActivity;
+import com.freshplanet.natExt.AirFacebookActivity;
+import com.freshplanet.natExt.AirFacebookExtension;
 
 public class AskForMorePermissionsFunction implements FREFunction
 {
 	@Override
 	public FREObject call(FREContext arg0, FREObject[] arg1)
 	{
-		// Retrieve permissions array length
+		// Retrieve permissions
 		FREArray permissionsArray = (FREArray)arg1[0];
-		
 		long arrayLength = 0;
 		try
 		{
@@ -23,11 +25,8 @@ public class AskForMorePermissionsFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 		}
-		
-		// Retrieve permissions
 		String[] permissions = new String[(int)arrayLength];
 		for (int i = 0; i < arrayLength; i++)
 		{
@@ -37,17 +36,24 @@ public class AskForMorePermissionsFunction implements FREFunction
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
+				Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 				permissions[i] = null;
 			}
 		}
 		
-		// Start login activity
-		Intent i = new Intent(arg0.getActivity().getApplicationContext(), FBLoginActivity.class);
-		i.putExtra("permissions", permissions);
-		i.putExtra("forceAuthorize", true);
-		arg0.getActivity().startActivity(i);
+		// Retrieve permissions type (false if read, true if publish)
+		Boolean publish = false;
+		try
+		{
+			publish = arg1[1].getAsBool();
+		}
+		catch (Exception e)
+		{
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
+		}
+		
+		// Reauthorize Facebook session
+		AirFacebookActivity.getInstance().reauthorize(Arrays.asList(permissions), publish);
 		
 		return null;	
 	}

@@ -22,12 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.adobe.fre.FREArray;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
 import com.adobe.fre.FREObject;
-import com.freshplanet.natExt.FBRequestThread;
+import com.freshplanet.natExt.AirFacebookActivity;
+import com.freshplanet.natExt.AirFacebookExtension;
 
 public class DeleteInvitesFunction implements FREFunction
 {
@@ -43,8 +45,7 @@ public class DeleteInvitesFunction implements FREFunction
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
+			Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 		}
 		
 		// Create JSON array
@@ -61,8 +62,7 @@ public class DeleteInvitesFunction implements FREFunction
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
-				arg0.dispatchStatusEventAsync("LOGGING", "Error - " + e.getMessage());
+				Log.d(AirFacebookExtension.TAG, e.getLocalizedMessage());
 			}
 		}
 		
@@ -70,9 +70,8 @@ public class DeleteInvitesFunction implements FREFunction
 		Bundle params = new Bundle();
 		params.putString("batch", batch_array.toString());
 		
-		// Create new thread
-		FBRequestThread thread = new FBRequestThread(arg0, "deleteInvites", "me", params, "POST");
-		thread.start();
+		// Run Facebook request
+		AirFacebookActivity.getInstance().request("me", params, "POST", "deleteInvites");
 		
 		return null;
 	}

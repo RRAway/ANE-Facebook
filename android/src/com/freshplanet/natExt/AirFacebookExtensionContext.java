@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
-import com.facebook.android.Facebook;
 import com.freshplanet.natExt.functions.AskForMorePermissionsFunction;
 import com.freshplanet.natExt.functions.DeleteInvitesFunction;
 import com.freshplanet.natExt.functions.ExtendAccessTokenIfNeededFunction;
@@ -39,12 +38,9 @@ import com.freshplanet.natExt.functions.OpenFeedDialogFunction;
 import com.freshplanet.natExt.functions.PostOGActionFunction;
 import com.freshplanet.natExt.functions.RequestWithGraphPathFunction;
 
-public class FBExtensionContext extends FREContext
-{
-	public static Facebook facebook;
-	public static FBLoginActivity facebookLoginActivity;
-	
-	public FBExtensionContext()
+public class AirFacebookExtensionContext extends FREContext
+{	
+	public AirFacebookExtensionContext()
 	{
 		return;
 	}
@@ -52,7 +48,7 @@ public class FBExtensionContext extends FREContext
 	@Override
 	public void dispose()
 	{
-		FBExtension.context = null;
+		AirFacebookExtension.context = null;
 	}
 
 	/**
